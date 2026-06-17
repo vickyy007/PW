@@ -61,7 +61,7 @@
 
  
 
- test('@Child windows hadle', async ({browser})=>
+ test('@Child windows handle', async ({browser})=>
  {
     const context = await browser.newContext();
     const page =  await context.newPage();
