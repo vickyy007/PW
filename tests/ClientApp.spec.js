@@ -18,7 +18,7 @@ test('@Webst Client App login', async ({ page }) => {
 
    const titles = await page.locator(".card-body b").allTextContents();
    console.log(titles); 
-   
+    
    const count = await products.count();
    for (let i = 0; i < count; ++i) {
       if (await products.nth(i).locator("b").textContent() === productName) {
@@ -28,17 +28,22 @@ test('@Webst Client App login', async ({ page }) => {
       }
    }
 
+
+   // click on cart and assert on the product in cart
    await page.locator("[routerlink*='cart']").click();
    //await page.pause();
 
    await page.locator("div li").first().waitFor();
    const bool = await page.locator("h3:has-text('zara coat 3')").isVisible();
    expect(bool).toBeTruthy();
+
+   //click on Checkout and select country from dropdown and place the order
    await page.locator("text=Checkout").click();
 
-   await page.locator("[placeholder*='Country']").pressSequentially("ind");
+   await page.locator("[placeholder*='Country']").pressSequentially("ind" , {delay:150});
    const dropdown = page.locator(".ta-results");
    await dropdown.waitFor();
+
    const optionsCount = await dropdown.locator("button").count();
    for (let i = 0; i < optionsCount; ++i) {
       const text = await dropdown.locator("button").nth(i).textContent();
@@ -48,12 +53,16 @@ test('@Webst Client App login', async ({ page }) => {
       }
    }
 
+
+   //print order id and assert on order history.
    expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
    await page.locator(".action__submit").click();
    await expect(page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ");
    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
    console.log(orderId);
 
+
+   // print all the order id's from my orders page and assert on the order id from the previous page.
    await page.locator("button[routerlink*='myorders']").click();
    await page.locator("tbody").waitFor();
    const rows = await page.locator("tbody tr");
