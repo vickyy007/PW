@@ -1,6 +1,6 @@
  const {test, expect} = require('@playwright/test');
 
- test('@special locators', async ({ page }) => {
+ test('special locators', async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/angularpractice/");
     await page.getByLabel("Check me out if you Love IceCreams!").click();
@@ -11,13 +11,4 @@
     await page.getByRole("link" , {name:'shop'}).click();
     await page.locator("app-card").filter({hasText:'Nokia Edge'}).getByRole("button" , {name:'Add'}).click();
      
-
-
-
-
-
-
-
-
-
  })
